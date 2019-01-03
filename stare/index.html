@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="obzartuchyinput">
+    <button id="apply">Dodaj obzartucha</button><span>Ile sekund zajmuje mu jedzenie jednego ciastka</span>
+    <div id="showob"></div>
+
+    <input type="text" id="paczkainput">
+    <button id="paczkabtn">Ilość ciastek w paczce</button>
+    <div id="showcookie"></div>
+    <br>
+    <button id="ciastkabutton">Oblicz ciastka</button>
+    <div id="result"></div>
+
+    <script src="lodash.js"></script>
+    <script>
+    var obzartuchy = [];
+    var tablica =[3,4,5];
+    var paczka=10;
+    var ciastka2 = [];
+    obinput = document.getElementById('obzartuchyinput');
+    paczkainput =  document.getElementById('paczkainput');
+
+
+    document.getElementById('apply').addEventListener("click", function(){
+        obzartuchy.push(obinput.value);
+        document.getElementById('showob').innerHTML = obzartuchy;
+
+    });
+
+    document.getElementById('paczkabtn').addEventListener("click", function(){
+        document.getElementById('showcookie').innerHTML = paczkainput.value;
+
+    });
+
+    document.getElementById('ciastkabutton').addEventListener("click", function(){
+
+        var ciastka = [];
+        obzartuchy.forEach(function(item, index){
+        ciastka.push(item/3600 * 24);
+        ciastka2.push(" " + _.round(3600/item * 24, 2) + " ");
+
+
+        });
+        var sum;
+        // console.log(typeof(ciastka));
+        sum = ciastka2.reduce(function(a,b){
+            console.log(a);
+            console.log(b);
+            return(parseInt(a) + parseInt(b));
+        });
+        // console.log(Math.ceil(sum/paczkainput.value));
+        document.getElementById('result').innerHTML = "Po kolei jedzą ciastek w ciągu dnia: "+ ciastka2 + " Ilość paczek: " + Math.ceil(sum/paczkainput.value);
+
+    });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+
+</body>
+</html>

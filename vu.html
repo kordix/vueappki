@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vuezartuchy</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="row">
+                <ul>
+                    <li v-for="error in errors">{{error}}</li>
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="fatter">Dodaj obżartucha</label>
+                    <input type="text" id="addfatter" v-model="fatter">
+                    <button class="btn btn-primary" @click="pushfatter">Dodaj</button>
+                    <div v-if="fatterbool">Ilość potrzebnych ciastek (na obżartucha, na dzień): <span v-for="item in fatters">{{item}}</span> <span>Razem: {{sumcookies}}</span></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+
+                    <label for="pack">Ilość ciastek w paczce:</label>
+                    <input type="text" style="width:50px" id="pack" v-model="pack">
+                    <span>(nie trzeba zatwierdzać)</span>
+                </div>
+
+            </div>
+            <div class="row">
+            <button class="btn btn-primary" @click="calc">Oblicz paczki</button>
+            </div>
+            <div class="row">
+                <div v-if="calcbool">Łącznie paczek: {{packs}} Zostanie: {{rest}} ciastek</div>
+
+            </div>
+        </div>
+    </div>
+    <script src="lodash.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <script>
+        var App = new Vue({
+            el: '#app',
+            data: {
+                fatterbool: false,
+                calcbool:false,
+                fatter: null,
+                fatters: [],
+                pack: null,
+                packs: null,
+                sumcookies: null,
+                rest: null,
+                dupa: null,
+                errors: []
+            },
+            methods: {
+
+                pushfatter: function() {
+                    this.fatters.push(" " + _.round(3600 / this.fatter * 24, 2) + " ");
+                    this.fatterbool = true;
+                    // console.log(this.fatters);
+                },
+                validate() {
+                    if (!this.pack) {
+                        console.log('obroniliśmy się');
+                        return true;
+                    }
+                },
+                calc: function() {
+                    if (!this.pack) {
+                        console.log('obroniony');
+                        this.errors.push('Uzupełnij ile jest ciastek w paczce');
+                        return
+                    }
+                    this.sumcookies = this.fatters.reduce(function(a, b) {
+                        return (parseFloat(a) + parseFloat(b));
+                    });
+                    this.packs = Math.ceil(this.sumcookies / this.pack);
+                    this.rest = this.pack - this.sumcookies % this.pack;
+                    this.calcbool = true;
+                },
+
+                check: function() {
+                    console.log('fdsa');
+
+                }
+            }
+
+        });
+    </script>
+
+
+
+</body>
+
+</html>
