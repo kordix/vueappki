@@ -23,6 +23,7 @@
                     <label for="fatter">Dodaj obżartucha</label>
                     <input type="text" id="addfatter" v-model="fatter">
                     <button class="btn btn-primary" @click="pushfatter">Dodaj</button>
+                    <span>(ile sekund na jedno)</span>
                     <div v-if="fatterbool">Ilość potrzebnych ciastek (na obżartucha, na dzień): <span v-for="item in fatters">{{item}}</span> <span>Razem: {{sumcookies}}</span></div>
                 </div>
             </div>
