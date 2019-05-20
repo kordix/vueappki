@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  .active{
+    color:red;
+    font-weight:bold;
+  }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>Gra w handel</h1>
+    <p>Aktualne miasto: {{currentcity.nazwa}}</p>
+    <p>Ceny sprzedaży: <span v-for="good in currentcity.goods">{{good.name}}:{{good.cost}}&nbsp;</span></p>
+    <p>Twoja kasa: {{kasa}}</p>
+    <ul>
+      <li v-for="(miasto,index) in miasta" v-bind:class="{active:miasto.nazwa == currentcity.nazwa}" @click="setActiveCity(miasto)">{{miasto.nazwa}}{{index}}</li>
+    </ul>
+  <button @click="sell">Sell</button>
+  {{miasta[0].goods[0].cost}}
+  </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+<script>
+var app = new Vue({
+  el:'#app',
+data:{
+  isActive:true,
+  goods: [{nazwa:'drewno'},{nazwa:'kamień'}],
+  kasa:150,
+  miasta: [{nazwa:'Kraków',cena:15,isActivee:false,goods:[{name:'drewno',cost:10},{name:'kamień',cost:20}] },{nazwa:'Luzino',cena:30,isActive:false,goods:[{name:'drewno',cost:50},{name:'kamień',cost:40}]}
+  ,{nazwa:'Warszawa',cena:40,isActive:'false',goods:[{name:'drewno',cost:10},{name:'kamień',cost:20}]}],
+  currentcity:'',
+},
+methods:{
+sell:function(){
+  console.log('sell')
+},
+setActiveCity: function(port){
+port.isActivee =! port.isActivee;
+this.currentcity = port;
+},
+sell:function(){
+  this.kasa += this.currentcity.cena;
+}
+
+}
+
+})
+
+</script>
+
+
+</body>
+</html>
