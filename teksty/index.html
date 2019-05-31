@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+<div class="" id="app">
+{{all}}
+<button type="button" name="button" @click="generate">generuj</button>
+<button type="button" name="button" @click="test(alltab)">test</button>
+
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+
+<script>
+var app = new Vue({
+  el:'#app',
+  data:{
+    alltab:[['ksiądz','kaczyński','pisowiec','tusk'],['atakuje','niszczy','psuje','molestuje'],['a','b','c']],
+    tab1:['ksiądz','kaczyński','pisowiec','tusk'],
+    tab2:['atakuje','niszczy','psuje','molestuje','pali','zdradza','sprzedaje','donosi na'],
+    tab3:['dzieci','europe','szkołę','uchodźców'],
+    all:''
+  },
+  methods:{
+    generate(){
+      var self=this;
+       this.all = this.gen(this.tab1) +' '+this.gen(this.tab2)+' '+this.gen(this.tab3) ;
+
+    },
+    gen(elem){
+      return elem[Math.floor(Math.random()*elem.length)];
+    },
+    test(elem){
+      let str='';
+      for (i=0;i<elem.length;i++){
+
+      }
+
+    }
+
+  }
+})
+
+// let tab=['a','b','c','d'];
+// function gen(elem){
+//   return
+// }
+
+</script>
+
+
+  </body>
+</html>
