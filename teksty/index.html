@@ -6,9 +6,26 @@
   </head>
   <body>
 <div class="" id="app">
+    <p v-if="errors" v-for="error in errors" style="color:red">{{error}}</p>
+
+    <label for="tryb"><span v-if="tryb==''">Wybierz tryb</span><span v-else>Tryb </span> propagandy:</label>
+    <select class="" name="" v-model="tryb">
+        <option value="PIS">POwska</option>
+        <option value="PO">PiSowska</option>
+    </select>
 {{all}}
 <button type="button" name="button" @click="generate">generuj</button>
-<button type="button" name="button" @click="test(alltab)">test</button>
+<!-- <button type="button" name="button" @click="myjoin()">test</button> -->
+<div class="" style="height:30px"></div>
+<span>Opcje:</span> <input type="checkbox" name="" value="" v-model="showop"><br>
+<section id="options" v-if="showop">
+
+<label for="">Wywal:</label>
+<select class="" name="" v-model="choseel">
+    <option v-bind:value="index" v-for="(elem,index) in kptab3">{{index}} {{elem}}</option>
+</select>
+<button type="button" name="button" @click="remove">ok</button>
+</section>
 
 </div>
 
@@ -18,28 +35,68 @@
 var app = new Vue({
   el:'#app',
   data:{
-    alltab:[['ksiądz','kaczyński','pisowiec','tusk'],['atakuje','niszczy','psuje','molestuje'],['a','b','c']],
-    tab1:['ksiądz','kaczyński','pisowiec','tusk'],
-    tab2:['atakuje','niszczy','psuje','molestuje','pali','zdradza','sprzedaje','donosi na'],
-    tab3:['dzieci','europe','szkołę','uchodźców'],
-    all:''
+      tryb:'',choseel:'',showop:'',
+    alltab:[['ksiądz','MOSAD','HAMAS','kaczyński','pisowiec','tusk'],['atakuje','niszczy','psuje','molestuje'],['a','b','c']],
+    ktab0:['nawiedzony','zacofany','zaściankowy'],
+    ktab1:['pisowski ksiądz','kaczyński','pisowiec','katotalib'],
+    ktab2:['znieważa','zawstydza','zwalcza','atakuje','niszczy','psuje','molestuje','pali'],
+    ktab3:['dzieci','europe','szkołę','uchodźców','niezawisłe sądy','prawa osób LGBT'],
+    kptab2:['zachwala','kultywuje','utrzymuje'],
+    kptab3:['polski ciemnogród','nietolerancję i zacofanie','pedofilie wśród księży'],
+    dtab0:['zdradziecki','lewacki','parszywy','sprzedajny','złodziejski','żałosny'],
+    dtab1:['Tusk','leming','wykształciuch','POwiec'],
+    dtab2:['zdradza','sprzedaje','znieważa','donosi na','poniża','okrada'],
+    dtab3:['suwerenny rząd wybrany przez Polaków','kraj który wydał na świat Papieża Polaka','Polską suwerenność','Polską godność, dumę i tradycję'],
+    dptab2:['zdradziecko','lewacko','sprzedajnie','parszywie'],
+    dptab3:['zachwala','ubóstwia'],
+    dptab4:['upadły zachód','zgniły zachód','unijne instytucje','złotego cielca'],
+    all:'',
+    all2:'',
+    errors:[]
   },
   methods:{
     generate(){
-      var self=this;
-       this.all = this.gen(this.tab1) +' '+this.gen(this.tab2)+' '+this.gen(this.tab3) ;
+    if(this.check()){
+        let num = Math.floor((Math.random()+0.1)*2);
+        console.log(num);
+      // var self=this;
+      if (this.tryb == 'PIS'){
+          if (num==1 && this.kptab3.length>0){this.all = this.gen(this.ktab0)+' '+this.gen(this.ktab1) +' '+this.gen(this.ktab2)+' '+this.gen(this.ktab3)}
+          else{this.all = this.gen(this.ktab0)+' '+this.gen(this.ktab1)+' '+this.gen(this.kptab2)+' '+ this.gen(this.kptab3)}
+      }else{
 
-    },
+          if(num==1){this.all = this.gen(this.dtab0)+' '+this.gen(this.dtab1)+' '+this.gen(this.dptab2) +' '+this.gen(this.dtab2)+' '+this.gen(this.dtab3) ;}
+          else{this.all = this.gen(this.dtab0)+' '+this.gen(this.dtab1) +' '+this.gen(this.dptab2)+' '+this.gen(this.dptab3)+' '+this.gen(this.dptab4) }
+      }
+    }},
     gen(elem){
       return elem[Math.floor(Math.random()*elem.length)];
+    },
+    gettryb(){
+
+    },
+    check(){
+        if(this.tryb == ''){
+            this.errors.push('Wybierz tryb propagandy');
+            return false;
+        }else{
+            this.errors = [];
+            return true;
+        }
     },
     test(elem){
       let str='';
       for (i=0;i<elem.length;i++){
 
       }
-
-    }
+  },
+  myjoin(){
+      let newar = this.kptab3.concat(this.dtab3);
+      console.log(newar);
+  },
+  remove(){
+      this.kptab3.splice(this.choseel,1);
+  }
 
   }
 })

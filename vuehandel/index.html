@@ -15,37 +15,94 @@
 <body>
   <div id="app">
     <h1>Gra w handel</h1>
+    <p  v-for="error in errors" style="color:red">{{error}}</p>
     <p>Aktualne miasto: {{currentcity.nazwa}}</p>
-    <p>Ceny sprzedaży: <span v-for="good in currentcity.goods">{{good.name}}:{{good.cost}}&nbsp;</span></p>
+    <p>Ceny sprzedaży: <span v-for="good in currentcity.goods">{{good.name}}:<b>{{good.cost}}</b>,ilość:{{good.ile}} &nbsp;</span></p>
     <p>Twoja kasa: {{kasa}}</p>
     <ul>
-      <li v-for="(miasto,index) in miasta" v-bind:class="{active:miasto.nazwa == currentcity.nazwa}" @click="setActiveCity(miasto)">{{miasto.nazwa}}{{index}}</li>
+      <li v-for="(miasto,index) in miasta" v-bind:class="{active:miasto.nazwa == currentcity.nazwa}" @click="setActiveCity(miasto)">{{miasto.nazwa}}</li>
+    </ul>
+    <br>
+    <ul>
+        <li v-for="good in goods" v-bind:class="{active:good.nazwa == currentgood.nazwa}" @click="setActiveGood(good)">{{good.nazwa}} {{good.ile}}</li>
     </ul>
   <button @click="sell">Sell</button>
-  {{miasta[0].goods[0].cost}}
+  <button @click="buy">Buy</button>
+
   </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
 <script>
 var app = new Vue({
   el:'#app',
 data:{
+    errors:[],
   isActive:true,
-  goods: [{nazwa:'drewno'},{nazwa:'kamień'}],
+  currentgood:'',
+  goods: [{nazwa:'drewno',ile:0},{nazwa:'kamień',ile:0}],
   kasa:150,
-  miasta: [{nazwa:'Kraków',cena:15,isActivee:false,goods:[{name:'drewno',cost:10},{name:'kamień',cost:20}] },{nazwa:'Luzino',cena:30,isActive:false,goods:[{name:'drewno',cost:50},{name:'kamień',cost:40}]}
-  ,{nazwa:'Warszawa',cena:40,isActive:'false',goods:[{name:'drewno',cost:10},{name:'kamień',cost:20}]}],
+  miasta: [{nazwa:'Kraków',cena:15,isActivee:false,goods:[{name:'drewno',cost:10,ile:5},{name:'kamień',cost:20,ile:5}] },
+  {nazwa:'Luzino',cena:30,isActive:false,goods:[{name:'drewno',cost:50,ile:5},{name:'kamień',cost:40,ile:5}]}
+  ,{nazwa:'Warszawa',cena:40,isActive:'false',goods:[{name:'drewno',cost:10,ile:5},{name:'kamień',cost:20,ile:5}]}],
   currentcity:'',
 },
 methods:{
-sell:function(){
-  console.log('sell')
-},
 setActiveCity: function(port){
-port.isActivee =! port.isActivee;
+// port.isActivee =! port.isActivee;
 this.currentcity = port;
 },
+setActiveGood:function(elem){
+this.currentgood = elem;
+},
 sell:function(){
-  this.kasa += this.currentcity.cena;
+    try{
+    if(this.currentcity!= "" && this.currentgood!="" ){
+        let good = this.currentgood.nazwa;
+        let citygood =this.currentcity.goods.find(el=>el.name == good).cost;
+        let cityile =this.currentcity.goods.find(el=>el.name == good).ile;
+        let cityindex =this.currentcity.goods.findIndex(el=>el.name == good);
+
+            if(this.currentgood.ile>0){
+                this.errors = [];
+                this.kasa += citygood;
+                let index = this.goods.findIndex(el=>el.nazwa==good);
+                this.goods[index].ile--;
+                this.currentcity.goods[cityindex].ile++;
+            }else{
+                if(this.currentgood.ile<=0){this.errors.push('nie masz surowca');}
+            }
+        }else{
+            this.errors.push("ustaw miasto i surowiec");
+        }
+    }
+    catch(e){
+        console.log(e.message);
+    }
+},
+buy:function(){
+    try{
+    if(this.currentcity!= "" && this.currentgood!="" ){
+        let good = this.currentgood.nazwa;
+        let citygood =this.currentcity.goods.find(el=>el.name == good).cost;
+        let cityile =this.currentcity.goods.find(el=>el.name == good).ile;
+        let cityindex =this.currentcity.goods.findIndex(el=>el.name == good);
+
+            if(this.kasa>=citygood && cityile>0){
+                this.errors = [];
+                this.kasa -= citygood;
+                let index = this.goods.findIndex(el=>el.nazwa==good);
+                this.goods[index].ile++;
+                this.currentcity.goods[cityindex].ile--;
+            }else{
+                if(this.kasa<citygood){this.errors.push('nie masz kasy');}
+                if(cityile<=0){this.errors.push('w mieście nie ma już surowca');}
+            }
+        }else{
+            this.errors.push("ustaw miasto i surowiec");
+        }
+    }
+    catch(e){
+        console.log(e.message);
+    }
 }
 
 }

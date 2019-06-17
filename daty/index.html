@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Gra daty Vue</title>
+        <style media="screen">
+        .card:hover::after{
+            content:"wstaw";
+        border:1px black solid;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="" id="app">
+            <p class="card">fdsa</p>
+            <p>Aktualne wydarzenie:{{current.opis}}</p>
+            <div class="card" v-for="(data,index) in datyboard" @click="check(index,datyboard)" style="display:inline-block;width:80px">
+                <p>{{data.date}}</p>
+                <p>{{data.opis}}</p>
+            </div>
+            <div class="">
+                Błędy: {{fails}}
+            </div>
+            <button type="button" name="button" @click="draw">draw</button>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+        <script type="text/javascript">
+            var App = new Vue({
+                el:'#app',
+                data:{
+                    datyboard:[{date:"-100000",opis:"początek ziemi"}],
+                    daty:[{date:"1596 ",opis:"Unia brzeska"},{date:"1600 ",opis:"Początek wojny ze Szwedami"},{date:"1609",opis:"Wojna polsko-rosyjska"},{date:"1610",opis:"zajęcie Moskwy przez Żółkiewskiego"},{date:"1496",opis:"statusy piotrkowskie"},{date:"1018",opis:"wyprawa kijowska"},{date:"1620",opis:"klęska pod cecorą"}
+                    ,{date:"1655",opis:"potop szwedzki"},{date:"1660",opis:"pokój w oliwie"},{date:"1669",opis:"pierwsze liberum veto"},{date:"1879",opis:"narodziny einsteina"},{date:"1921",opis:"Einstein nobel z fizyki"},{date:"1492",opis:"Kolumb"},{date:"1756",opis:"Narodziny Mozarta"},{date:"1804",opis:"Napoleon"},{date:"1772",opis:"I rozbiór"},{date:"1791",opis:"Konstytucja 3 maja"},
+                    {date:"1793",opis:"II rozbiór"},{date:"1795",opis:"III rozbiór"},{date:"1914",opis:"I wojna"},{date:"1944",opis:"Market Garden"}, ],
+                    current:{},
+                    fails:0
+                },
+                methods:{
+                    check(index,arr){
+                     try{
+                        if(index+1 == arr.length){
+                            if(this.current.date > arr[index].date){
+                                arr.splice(index+1,0,this.current);
+                                this.draw();
+                            }else{
+                                this.fails++;
+                            }
+                        }
+                        else if(this.current.date < arr[index+1].date && this.current.date > arr[index].date) {
+                            arr.splice(index+1,0,this.current);
+                            this.draw();
+
+                        }
+                        else{
+                            this.fails++;
+
+                            console.log(arr.length);
+                            console.log(arr.index);
+
+                        }
+
+                    }catch(e){
+                        console.log(e.message);
+                        console.log(arr.length);
+                        console.log(index+1);
+                        console.log(arr[index].date);
+                        console.log(this.current.date);
+                    }
+                },
+
+                draw(){
+                    if(this.checkwin()){
+                        return
+                    }
+                    let num = Math.floor(Math.random()*this.daty.length)
+                    this.current = this.daty[num];
+                    this.daty.splice(num,1);
+                },
+                checkwin(){
+                    if(this.daty.length==0){
+
+                        console.log('koniec gry');
+                        this.current={date:'koniec',opis:'koniec gry'};
+                        return true
+                    }
+                    }
+                },
+                mounted: function(){
+                    this.draw();
+                    this.datyboard.push(this.current);
+                    this.draw();
+
+                }
+
+
+            });
+
+        </script>
+
+    </body>
+</html>
