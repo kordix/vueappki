@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id='app'>
+    <v-stage ref="stage" :config="configKonva">
+      <v-layer ref="layer">
+        <!-- <v-circle :config="configCircle"></v-circle> -->
+        <v-image :config="{image:okleinaConf.image,x:okleinaConf.x,height:okleinaConf.height,width:okleinaConf.width,stroke:2}"></v-image>
+        <v-image :config="{image:tloczenieConf.image,x:tloczenieConf.x,y:tloczenieConf.y,height:tloczenieConf.height,width:tloczenieConf.width,stroke:1,offsetX:tloczenieConf.offsetX}"></v-image>
+
+      </v-layer>
+
+    </v-stage>
+    <input type="text" v-model="configCircle.radius">
+    <input type="number" v-model="okleinaConf.x">
+    <select v-model="tlo" @change="drawokleina">
+      <option value="01">Srebrno-szary</option>
+      <option value="04">Orzech</option>
+      <option value="06">Złoty Dąb</option>
+    </select>
+    <button @click="drawokleina">okleina</button>
+    <button @click="drawtloczenie">tloczenie</button>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+  <script src='https://unpkg.com/konva@3.3.3/konva.min.js'></script>
+
+  <script src='https://cdn.jsdelivr.net/npm/vue-konva@2.0.7/umd/vue-konva.min.js'></script>
+  <script src='script.js'></script>
+</body>
+
+</html>
