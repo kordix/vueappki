@@ -9,14 +9,29 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
 
-
+  <style>
+    .active {
+      color: red
+    }
+  </style>
 </head>
 
 <body>
   <div class="container">
     <div id="app">
-      <component v-bind:is="currentslide"></component>
-      <button @click="setSlide">Next</button>
+      <select name="" id="" v-model="currenttab">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+      <div v-if="currenttab==1">
+        <scroller :scrollerdata="serie.dane"></scroller>
+      </div>
+      <div v-if="currenttab==2">
+        <scroller :scrollerdata="modele.dane"></scroller>
+        <scroller :scrollerdata="klamki.dane"></scroller>
+      </div>
+      <dupa :test="dupatest"></dupa>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
