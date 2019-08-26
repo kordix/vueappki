@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">; -->
+    <style>
+    .field-h{
+        border:1px black solid;
+        position:relative;
+        /* padding:30px; */
+        width:4em;
+        height:4em;
+        float:left;
+    }
+
+    .field-v{
+        border:1px black solid;
+        width:4em;
+        height:4em;
+    }
+
+    .centerblock{
+        border:1px green solid;
+        width:24.7em;
+        height:20.5em;
+        float:left;
+        padding:0px;
+        margin:0px;
+    }
+
+    .player{
+        /* position:absolute; */
+        transition:1s
+    }
+
+    .player:hover{
+        left:200px;
+    }
+
+    #fieldDialogue > p {
+        margin:0px;
+    }
+    </style>
+</head>
+<body>
+
+<div id="app" style="width:600px;margin:auto">
+        <field v-for="n in 8" :fieldnumber="n-1" :class="'field-h'"></field>
+        <div style="clear:both"></div>
+        <div class="row">
+            <div id="leftfieldsgroup" style="width:4.1em;float:left">
+            <field v-for="n in 5" :fieldnumber="26-n" :class="'field-v'"></field>
+            </div>
+            <div class="centerblock"></div>
+            <div id="rightfieldsgroup" style="width:4em;float:left">
+                <field v-for="n in 5" :fieldnumber="n+7" class="field-v"></field>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <field v-for="n in 8" :fieldnumber="21-n" :class="'field-h'"></field>
+
+        <div style="clear:both"></div>
+        <p></p>
+        <div style="display:flex;justify-content:space-between;">
+            <div style="flex:40%">
+            <button @click="rollDice">Rzut kością</button>
+            <button @click="switchPlayer">koniec tury</button>
+            <span>Kość: {{dice}}</span>
+            <p>Aktualny gracz: <b :style="{color:currentplayerc.color}">{{currentplayer}}</b> Kasa: {{currentplayerc.money}}</p>
+            </div>
+            <div v-if="showfielddialogue" id="fieldDialogue" style="flex:30%">
+                <p>Nazwa działki:{{fields[currentfieldc].name}}</p>
+                <p>Cena działki:{{fields[currentfieldc].price}}</p>
+                <p>Właściciel:{{currentfieldc2.owner}}</p>
+                <button @click="buy(currentplayer, currentfieldc)">Kup działkę</button>
+            </div>
+        </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

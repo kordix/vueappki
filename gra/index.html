@@ -14,7 +14,7 @@
    </head>
    <body>
        <div id="app">
-            <div id="kwadrat" style="width:50px;height:50px;background:black" @keydown.right="moveright" @keydown.left="moveleft" @keydown.up="movetop" @keydown.down="movedown" @keyup.right="stop" v-bind:style="{left:kleft+'px',top:ktop+'px'}" tabindex="0" autofocus> </div>
+            <div id="kwadrat" style="width:50px;height:50px;background:black" @keyup="test" @keydown.right="moveright" @keydown.left="moveleft" @keydown.up="movetop" @keydown.down="movedown" @keyup.right="stop" v-bind:style="{left:kleft+'px',top:ktop+'px'}" tabindex="0" autofocus> </div>
        </div>
 
 
@@ -35,12 +35,19 @@ data:{
 kleft:10,
 ktop:10,
 p:0,
-go_right:false
+go_right:false,
+inter:50
 },
 methods:{
+test(){
+console.log('keyup');
+this.go_right = false;
+this.inter = 5000;
+
+},
 moveright(){
     var self=this;
-    this.go_right = setInterval(()=>{this.kleft=this.kleft+3},50);
+    this.go_right = setInterval(()=>{this.kleft=this.kleft+3},this.inter);
 
 },
 right(){
