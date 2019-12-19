@@ -1,0 +1,3 @@
+currentplayer-zwraca kolor
+currentplayerc - obiekt
+currenfieldc2 - obiekt

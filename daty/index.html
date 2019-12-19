@@ -4,24 +4,39 @@
         <meta charset="utf-8">
         <title>Gra daty Vue</title>
         <style media="screen">
-        .card:hover::after{
+        /* .card:hover::after{
             content:"wstaw";
         border:1px black solid;
+        } */
+
+        body{
+            font-family:arial;
+        }
+
+        .card{
+            padding:5px;
+            border:1px black solid;
+            height:170px;
+            width:200px;
+            border-radius:4%;
+            width:120px;
+            margin-right:5px;
         }
         </style>
     </head>
     <body>
         <div class="" id="app">
-            <p class="card">fdsa</p>
-            <p>Aktualne wydarzenie:{{current.opis}}</p>
-            <div class="card" v-for="(data,index) in datyboard" @click="check(index,datyboard)" style="display:inline-block;width:80px">
+        <p>Aktualne wydarzenie:{{current.opis}}</p>
+        <div style="display:flex;flex-wrap:wrap;margin-bottom:1em;">
+            <div class="card" v-for="(data,index) in datyboard" @click="check(index,datyboard)">
                 <p>{{data.date}}</p>
                 <p>{{data.opis}}</p>
             </div>
+        </div>
             <div class="">
                 Błędy: {{fails}}
             </div>
-            <button type="button" name="button" @click="draw">draw</button>
+            <!-- <button type="button" name="button" @click="draw">draw</button> -->
         </div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
         <script type="text/javascript">

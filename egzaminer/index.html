@@ -9,10 +9,21 @@
 <body>
 
     <div id="app">
-        <p>Pytanie </p>
+        <div id="error" v-for="error in errors">{{error}}</div>
+        <p>Pytanie: {{currentQuestion.question}} </p>
+        <p>Counter: {{currentQuestion.counter}}</p>
         <label for="answer">Odpowiedź</label>
-        <input type="text" v-model="answer" placeholder="odpowiedź"><button @click="answerm">answer</button>
+        <form action="" @submit="test">
+            <input id="answerinput" type="text" v-model="answer" placeholder="odpowiedź" :disabled="disabledInput" autocomplete="off">
+            <button v-show="!disabledInput" @click="answerm">answer</button>
+            <button id="nextbutton" v-show="disabledInput" @click="next">Dalej</button>
+            <input id="test" type="text">
+        </form>
+
+        <p click="previous">Strzałka w lewo</p>
     </div>
+
+
 
 
 

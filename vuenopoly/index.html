@@ -10,22 +10,21 @@
     .field-h{
         border:1px black solid;
         position:relative;
-        /* padding:30px; */
-        width:4em;
-        height:4em;
+        width:5em;
+        height:5em;
         float:left;
     }
 
     .field-v{
         border:1px black solid;
-        width:4em;
-        height:4em;
+        width:5em;
+        height:5em;
     }
 
     .centerblock{
         border:1px green solid;
-        width:24.7em;
-        height:20.5em;
+        width:30.7em;
+        height:25.5em;
         float:left;
         padding:0px;
         margin:0px;
@@ -33,6 +32,7 @@
 
     .player{
         /* position:absolute; */
+        font-size:12px;
         transition:1s
     }
 
@@ -43,45 +43,84 @@
     #fieldDialogue > p {
         margin:0px;
     }
+
+    body{
+        font-family: "Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    }
+
     </style>
 </head>
 <body>
 
-<div id="app" style="width:600px;margin:auto">
-        <field v-for="n in 8" :fieldnumber="n-1" :class="'field-h'"></field>
+<div id="app" >
+    <div id="plansza" style="float:left;margin-left:40px;margin-right:30px">
+        <field v-for="n in 8" :fieldnumber="n-1" :fieldobject="fields[n-1]" :key="fields[n-1].name" :class="'field-h'"></field>
         <div style="clear:both"></div>
         <div class="row">
-            <div id="leftfieldsgroup" style="width:4.1em;float:left">
-            <field v-for="n in 5" :fieldnumber="26-n" :class="'field-v'"></field>
+            <div id="leftfieldsgroup" style="width:5.1em;float:left">
+            <field v-for="n in 5" :fieldnumber="26-n" :fieldobject="fields[26-n]" :key="fields[26-n].name" :class="'field-v'"></field>
             </div>
             <div class="centerblock"></div>
             <div id="rightfieldsgroup" style="width:4em;float:left">
-                <field v-for="n in 5" :fieldnumber="n+7" class="field-v"></field>
+                <field v-for="n in 5" :fieldnumber="n+7" :fieldobject="fields[n+7]" :key="fields[n+7].name" class="field-v"></field>
             </div>
         </div>
         <div style="clear:both"></div>
-        <field v-for="n in 8" :fieldnumber="21-n" :class="'field-h'"></field>
+        <field v-for="n in 8" :fieldnumber="21-n" :fieldobject="fields[21-n]" :key="fields[21-n].name" :class="'field-h'"></field>
 
         <div style="clear:both"></div>
         <p></p>
-        <div style="display:flex;justify-content:space-between;">
-            <div style="flex:40%">
-            <button @click="rollDice">Rzut kością</button>
+    </div>
+        <div style="display:flex;justify-content:space-between;" id="interfejs" style="float:left">
+            <div style="flex:20%" v-if="showMainDialogue">
+            <button @click="rollDice" v-if="!dicethrown">Rzut kością</button>
             <button @click="switchPlayer">koniec tury</button>
             <span>Kość: {{dice}}</span>
-            <p>Aktualny gracz: <b :style="{color:currentplayerc.color}">{{currentplayer}}</b> Kasa: {{currentplayerc.money}}</p>
+            <p>Aktualny gracz: <b :style="{color:currentplayerc.color}">{{currentplayerc.name}}</b> Kasa: {{currentplayerc.money}}</p>
             </div>
             <div v-if="showfielddialogue" id="fieldDialogue" style="flex:30%">
                 <p>Nazwa działki:{{fields[currentfieldc].name}}</p>
                 <p>Cena działki:{{fields[currentfieldc].price}}</p>
                 <p>Właściciel:{{currentfieldc2.owner}}</p>
-                <button @click="buy(currentplayer, currentfieldc)">Kup działkę</button>
+                <button @click="buy(currentplayerc.name)" v-if="buyboolc">Kup działkę</button>
+                <!-- <button  @click="startbet" v-if="currentfieldc2.owner==''">Licytuj działkę</button> -->
+
+            </div>
+            <div v-if="showBetDialogue">Licytacja:
+            <input type="number" v-model="betprice">
+            <button @click="nextPlayerBet">Dalej</button>
+            <button @click="betPass">Pas</button>
+            <p>Aktualnie licytuje: <span :style="{color:betPlayerC.color}">{{betPlayerC.color}} </span></p>
+
             </div>
         </div>
-
+        <div id="dziennik">
+            <p v-for="info in infos">{{info}}</p>
+        </div>
+    <p>to do</p>
+    <ul>
+        <li>ceny opłat, domy</li>
+        <li>money -</li>
+        <li>informacje o działce</li>
+        <li>agent</li>
+        <li>elektrownie, poukładanie, parking, więzienie np.</li>
+        <li>mechanizm elektrowni, lotniska</li>
+        <li>stylizowanie</li>
+        <li>podświetlanie aktualnego pola</li>
+    </ul>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+<script type="text/x-template" id="field-template">
+    <!-- <p>fsafds</p> -->
+    <div style="position:relative"><div style="position:absolute;width:100%;height:20px;background:#999;z-index:-1000" :style="{background:fieldObjectColor}"></div> <span :style="{color:$parent.fields[fieldnumber].fontcolor}" style="font-weight:bold;text-align:center;display:block;height:18px; margin-top:2px;font-size:12px"> {{$parent.fields[fieldnumber].name  }} </span>
+    <div style="display:flex;flex-wrap:wrap">
+    <div  v-for="player in  $parent.players" v-if="player.field==fieldnumber" class="player" style="margin:1px" :style="{color:player.color}">{{player.name}}</div>
+    </div>
+    <span style="font-size:0.4em;position:absolute;bottom:0px;left:0px;">Owner: <span  :style="{color:$parent.fields[fieldnumber].owner }">{{$parent.fields[fieldnumber].owner}}</span></span>
+    </div>
+</script>
+
 <script src="script.js"></script>
 </body>
 </html>
