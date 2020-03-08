@@ -1,7 +1,0 @@
--zapis do json lub bazy
--podsumowanie
--obrazki zamiast select option
-
--produkt
--seria Drzwi
--wymiary

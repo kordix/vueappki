@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <style>
+    input{
+        width:50px
+    }
+    </style>
+</head>
+<body>
+    <div id="app" class="container mt-3">
+            <label for="">Cena za litr paliwa</label>
+            <input v-model="price" type="number" step="0.1" >
+            zł <br>
+
+        <label for="">Przejechałeś</label>
+        <input type="text" v-model="distance" type="number"> 
+        km za
+        <input type="text" v-model="money" type="number">
+        zł
+        <br>
+        Kupiłeś {{fuel}} l paliwa.
+        Twoje auto pali: {{ratio}} l / 100 km
+
+
+
+    </div>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el:"#app",
+            data:{
+                distance:400,
+                price:5,
+                money:150   
+            },
+            computed:{
+                ratio(){
+                    return Math.floor( (this.money / this.price * (100/this.distance))*100)/100
+
+                },
+                fuel(){
+                    return Math.floor( (this.money / this.price)*100)/100
+                }
+            }
+        })
+    </script>
+</body>
+</html>
